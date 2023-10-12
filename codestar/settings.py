@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'cloudinary',
+    'crispy_forms',
     'django_summernote',
     'blog',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SITE_ID = 1
 
