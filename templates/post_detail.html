@@ -35,10 +35,29 @@
         <p class="card-text">{{ post.content | safe}}</p>
         <div class="row">
           <div class="col-1">
+            <strong>
+                {% if user.is_authenticated %}
+                <form action="{% url 'post_like' post.slug %}" class="d-inline" method="POST">
+                    {% csrf_token %}
+                    {% if liked %}
+                    <!-- if the button is liked, it will show a solid heart -->
+                    <button type="submit" name="blogpost_id" value="{{post.slug}}" class="btn-like"><i class="fas fa-heart"></i></button>
+
+                    {% else %}
+                    <!-- otherwise it will be an outlined heart (available to like)-->
+                    <button type="submit" name="blogpost_id" value="{{post.slug}}" class="btn-like"><i class="far fa-heart"></i></button>
+
+                    {% endif %}
+
+                </form>
+                {% else %}
+                <!-- if the user is not logged in, display the standard heart outline
+                not clickable button if not authenticated -->
+                <span class="text-secondary"><i class="far fa-heart"></i></span>
+                {% endif %}
+            </strong>
             <!-- The number of likes goes before the closing strong tag -->
-            <strong class="text-secondary"
-              ><i class="far fa-heart"></i> {{ number_of_likes }}</strong
-            >
+            <span class="text-secondary">{{ post.number_of_likes }} </span>
           </div>
           <div class="col-1">
             {% with comments.count as total_comments %}

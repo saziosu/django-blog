@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
+from django.http import HttpResponseRedirect
 from .models import Post
 from .forms import CommentForm
+
 
 
 # class based views making them re-usable, so try to use
@@ -80,3 +82,17 @@ class PostDetail(View):
                 "comment_form": CommentForm(),
             },
         )
+
+
+class PostLike(View):
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug,)
+        # if the post has been already liked
+        # and the user clicks the like button, remove the like
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+        # when we like or unlike the post it will reload the page
+        # This allows us to see the updated likes
+        return HttpResponseRedirect(reverse('post_detail', args=[slug]))

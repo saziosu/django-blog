@@ -7,4 +7,5 @@ urlpatterns = [
     # path converter converts this into a slug field
     # path converters: https://docs.djangoproject.com/en/3.2/topics/http/urls/#how-django-processes-a-request
     path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
+    path('like/<slug:slug>', views.PostLike.as_view(), name='post_like'),
 ]
